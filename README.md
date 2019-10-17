@@ -1,4 +1,4 @@
-py-polys
-========
+pypolys
+=======
 
 Python implementation of polynomials is presented. 
