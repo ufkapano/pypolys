@@ -25,8 +25,8 @@ p.degree()
 p.key_deg()
 p.key_lex()
 p.key_deglex()
-p[k]   # k-th coefficient
-len(p)   # the number of terms (from dict)
+p[k]   # k-th coefficient, k can be greater than p.degree()
+len(p)   # the number of terms (from dict), zero terms included
 p(q), p.combine(q)
 p(a), p.eval(a)   # Horner
 p ∗∗ n, pow(p, n)

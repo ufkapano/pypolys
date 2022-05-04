@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from fractions import Fraction
 
@@ -71,9 +71,9 @@ class Poly(dict):
     def fromiterable(cls, data):
         """Create a poly from coefficients."""
         new_poly = cls()
-        for (i, item) in enumerate(data):
-            if item != 0:   # zer nie trzymamy
-                new_poly[i] = item
+        for (key, coefficient) in enumerate(data):
+            if coefficient != 0:   # zer nie trzymamy
+                new_poly[key] = coefficient
         return new_poly
 
     def __getitem__(self, key):   # poly[k]
@@ -156,11 +156,11 @@ class Poly(dict):
         return new_poly
 
     def _eval1(self, x):   # schemat Hornera
-        i = self.degree()
-        result = self[i]   # istnieje
-        while i > 0:
-            i = i - 1
-            result = result * x + self.get(i, 0)
+        k = self.degree()
+        result = self[k]   # istnieje
+        while k > 0:
+            k = k - 1
+            result = result * x + self.get(k, 0)
         return result
 
     eval = _eval1
@@ -169,11 +169,11 @@ class Poly(dict):
         """Return the composition of two polys."""
         if not isinstance(other, Poly):
             other = Poly(other)
-        i = self.degree()         # tez schemat Hornera
-        new_poly = Poly(self[i])
-        while i > 0:
-            i = i - 1
-            new_poly = new_poly * other + Poly(self.get(i, 0))
+        k = self.degree()         # tez schemat Hornera
+        new_poly = Poly(self[k])
+        while k > 0:
+            k = k - 1
+            new_poly = new_poly * other + Poly(self.get(k, 0))
         #new_poly.cancel()   # niepotrzebne, bo jest w + i *
         return new_poly
 
