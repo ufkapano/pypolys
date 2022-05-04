@@ -10,7 +10,7 @@ See doc/quickstart.txt
 
 ~~~python
 >>> from fractions import Fraction
->>> from polys import Poly
+>>> from pypolys.polys import Poly
 >>> p = Poly(2, 3) + 4   # 2 * x ** 3 + 4
 >>> p
 Poly(4) + Poly(2, 3)

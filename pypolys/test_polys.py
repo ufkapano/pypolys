@@ -3,7 +3,7 @@
 import unittest
 import random
 from fractions import Fraction
-from polys import Poly
+from pypolys.polys import Poly
 
 
 class TestPoly(unittest.TestCase):

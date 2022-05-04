@@ -3,7 +3,7 @@
 import unittest
 import random
 from fractions import Fraction
-from polys import Poly
+from pypolys.polys import Poly
 
 x = Poly(1, 1)
 p = (x-1) * (x+1) +1
