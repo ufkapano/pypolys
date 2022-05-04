@@ -22,6 +22,7 @@ class Poly(dict):
     def is_zero(self):
         """Test if the poly is the zero polynomial."""
         # Pierwszy sposob dziala tez dla zerowych wspolczynnikow.
+        # To jest szybkie, bo pierwszy niezerowy konczy petle.
         return all(self[k] == 0 for k in self)
         # Drugi sposob - gdy zer nie trzymamy.
         #return not self
@@ -34,18 +35,22 @@ class Poly(dict):
         else:
             return max(k for k in self if self[k] != 0)
 
+    key_deg = degree
+
     key_lex = degree
 
     key_deglex = degree
 
-    def _cancel(self):
+    def cancel(self):
         """Remove all zeros."""
+        # Nie moge jednoczesnie iterowac i usuwac kluczy.
         to_delete = [k for k in self if self[k] == 0]
         for k in to_delete:
             del self[k]
 
     def __repr__(self):
         """Compute the string representation of the poly."""
+        self.cancel()
         if self.is_zero():
             return "Poly()"
         else:
@@ -53,7 +58,7 @@ class Poly(dict):
             for k in self:
                 item = self[k]
                 if isinstance(item, Fraction) and item.denominator == 1:
-                    # Od razu upraszczamy.
+                    # Od razu upraszczamy. To wolno podczas iteracji.
                     item = item.numerator
                     self[k] = item
                 if k == 0:
@@ -86,7 +91,7 @@ class Poly(dict):
         for k in other:
             new_poly[k] = new_poly.get(k, 0) + other[k]
         # To moze zwolnic kod.
-        #new_poly._cancel()   # moze byc x + (-x) = 0
+        #new_poly.cancel()   # moze byc x + (-x) = 0
         return new_poly
 
     __radd__ = __add__
@@ -101,7 +106,7 @@ class Poly(dict):
         for k in other:
             new_poly[k] = new_poly.get(k, 0) - other[k]
         # To moze zwolnic kod.
-        #new_poly._cancel()   # moze byc x - x = 0
+        #new_poly.cancel()   # moze byc x - x = 0
         return new_poly
 
     def __rsub__(self, other):       # poly1 - poly2
@@ -114,7 +119,7 @@ class Poly(dict):
         for k in other:
             new_poly[k] = new_poly.get(k, 0) + other[k]
         # To moze zwolnic kod.
-        #new_poly._cancel()
+        #new_poly.cancel()
         return new_poly
 
     def __eq__(self, other):   # poly1 == poly2
@@ -134,7 +139,7 @@ class Poly(dict):
             for j in other:
                 new_poly[i+j] = new_poly.get(i+j, 0) + self[i] * other[j]
         # To moze zwolnic kod.
-        #new_poly._cancel()  # (x-2)*(x+2)=x**2-4, znika x**1
+        #new_poly.cancel()  # (x-2)*(x+2)=x**2-4, znika x**1
         return new_poly
 
     __rmul__ = __mul__
@@ -169,7 +174,7 @@ class Poly(dict):
         while i > 0:
             i = i - 1
             new_poly = new_poly * other + Poly(self.get(i, 0))
-        #new_poly._cancel()   # niepotrzebne, bo jest w + i *
+        #new_poly.cancel()   # niepotrzebne, bo jest w + i *
         return new_poly
 
     combine = _combine1
@@ -179,7 +184,7 @@ class Poly(dict):
         while n > 0:
             new_poly = new_poly * self
             n = n - 1
-        #new_poly._cancel()   # niepotrzebne, bo jest w *
+        #new_poly.cancel()   # niepotrzebne, bo jest w *
         return new_poly
 
     def _power2(self, n):     # poly1 ** n
@@ -206,7 +211,7 @@ class Poly(dict):
                 if n % 2 == 0:
                     poly = poly * poly
                     n = n // 2
-            #new_poly._cancel()   # niepotrzebne, bo jest w *
+            #new_poly.cancel()   # niepotrzebne, bo jest w *
             return result
 
     __pow__ = _power3
@@ -237,6 +242,9 @@ class Poly(dict):
         """Dividing polys."""
         # Dopuszczamy dzielenie jednomianu przez jednomian.
         if isinstance(other, Poly):
+            # Trzeba usunac zerowe wspolczynniki.
+            self.cancel()
+            other.cancel()
             if len(self) != 1 or len(other) != 1:
                 raise ValueError("only monomials can be divided")
             k1 = list(self)[0]
@@ -264,6 +272,8 @@ class Poly(dict):
         """Return the least common multiple of two monomials."""
         if not isinstance(other, Poly):
             other = Poly(other)
+        self.cancel()
+        other.cancel()
         if len(self) != 1 or len(other) != 1:
             raise ValueError("only monomials have lcm")
         k1 = list(self)[0]
@@ -302,8 +312,8 @@ class Poly(dict):
 
     def iterterms(self):
         """The generator for terms from the poly."""
+        self.cancel()   # remove zero terms
         for k in self:
-            if self[k] != 0:
-                yield Poly(self[k], k)
+            yield Poly(self[k], k)
 
 # EOF

@@ -1,4 +1,4 @@
-# pypolys
+# pypolys package
 
 Python implementation of polynomials is presented.
 
