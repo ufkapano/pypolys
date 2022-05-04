@@ -2,9 +2,15 @@
 
 Python implementation of polynomials is presented.
 
-## Installation
+## Download
 
-See doc/quickstart.txt
+To install an official release do
+
+    python3 -m pip install pypolys
+
+To get the git version do
+
+    git clone https://github.com/ufkapano/pypolys.git
 
 ## Usage
 

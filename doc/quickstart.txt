@@ -1,21 +1,25 @@
 QUICK START
 ----------------------------------------------------------------------
-INSTALLATION IN LINUX WITH PYTHON AND GIT INSTALLED
+INSTALLING AN OFFICIAL RELEASE
 
-1. Clone the project into the home directory
+Requires: Python >= 3.7
 
-$ cd
-$ git clone https://github.com/ufkapano/pypolys.git
+python3 -m pip install --upgrade pip
+python3 -m pip install pypolys
+----------------------------------------------------------------------
+INSTALLING FROM SOURCE
 
-2. Add the 'pypolys' directory to the PYTHONPATH environment variable,
-for .bashrc file you can add:
+1. Clone the project into the git repository
 
-if [ -n "${PYTHONPATH}" ] ; then
-    PYTHONPATH="${PYTHONPATH}:$HOME/pypolys"
-else
-    PYTHONPATH="$HOME/pypolys"
-fi
+git clone https://github.com/ufkapano/pypolys.git
 
-3. Start using polynomials!
+2. Install the package in the editable mode
+
+cd pypolys
+python3 -m pip install -e .
+
+3. You can update the package any time
+
+git pull
 ----------------------------------------------------------------------
 EOF
