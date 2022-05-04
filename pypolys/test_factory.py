@@ -3,9 +3,9 @@
 import unittest
 import math
 from fractions import Fraction
-from polys import Poly
-#from mpolys import Poly
-from factory import PolyFactory
+from pypolys.polys import Poly
+#from pypolys.mpolys import Poly
+from pypolys.factory import PolyFactory
 
 
 class TestPolyFactory(unittest.TestCase):

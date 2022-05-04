@@ -29,10 +29,9 @@ class Poly(dict):
 
     def degree(self):
         """Return the degree of the poly."""
-        # Na razie pozwalam na zerowe wspolczynniki.
         if self.is_zero():
             return 0
-        else:
+        else:   # jest zabezpieczenie na zerowe wspolczynniki
             return max(k for k in self if self[k] != 0)
 
     key_deg = degree
@@ -55,7 +54,9 @@ class Poly(dict):
             return "Poly()"
         else:
             L = list()
-            for k in self:
+            key_list = list(self)
+            key_list.sort()
+            for k in key_list:
                 item = self[k]
                 if isinstance(item, Fraction) and item.denominator == 1:
                     # Od razu upraszczamy. To wolno podczas iteracji.
@@ -71,15 +72,15 @@ class Poly(dict):
     def fromiterable(cls, data):
         """Create a poly from coefficients."""
         new_poly = cls()
-        for (key, coefficient) in enumerate(data):
+        for (k, coefficient) in enumerate(data):
             if coefficient != 0:   # zer nie trzymamy
-                new_poly[key] = coefficient
+                new_poly[k] = coefficient
         return new_poly
 
-    def __getitem__(self, key):   # poly[k]
+    def __getitem__(self, k):   # poly[k]
         """Return the coefficient."""
         # Mozemy pytac o dowolnie duzy wspolczynnik.
-        return self.get(key, 0)
+        return self.get(k, 0)
 
     def __add__(self, other):   # poly1 + poly2, poly + number, number + poly
         """Return the sum of polys."""
@@ -182,7 +183,7 @@ class Poly(dict):
     def _power1(self, n):   # poly1 ** n
         new_poly = Poly(1)
         while n > 0:
-            new_poly = new_poly * self
+            new_poly *= self
             n = n - 1
         #new_poly.cancel()   # niepotrzebne, bo jest w *
         return new_poly
@@ -204,7 +205,7 @@ class Poly(dict):
             result = Poly(1)    # identycznosc w mnozeniu wielomianow
             while True:
                 if n % 2 == 1:
-                    result = result * poly
+                    result *= poly
                     n = n - 1
                     if n == 0:
                         break
